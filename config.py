@@ -5,12 +5,12 @@ id_pattern = re.compile(r'^.\d+$')
 
 class Config(object):
     # pyro client config
-    API_ID    = os.environ.get("API_ID", "")
-    API_HASH  = os.environ.get("API_HASH", "")
+    API_ID    = os.environ.get("API_ID", "22768311")
+    API_HASH  = os.environ.get("API_HASH", "702d8884f48b42e865425391432b3794")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "") 
    
     # database config
-    DATABASE_NAME = os.environ.get("DATABASE_NAME","")     
+    DATABASE_NAME = os.environ.get("DATABASE_NAME","Cluster0")     
     DATABASE_URL  = os.environ.get("DATABASE_URL","")
  
     # other configs
@@ -39,17 +39,17 @@ class Txt(object):
 
 ➻ This Bot Also Supports Custom Thumbnail And Custom Caption.
 
-<b>Bot Is Made By :</b> @MadflixBotz"""
+<b>Bot Is Made By :</b> @World_Fastest_Bots"""
 
     ABOUT_TXT = """
 ╭───────────────⍟
 ├<b>🤖 My Name</b> : {}
-├<b>🖥️ Developer</b> : <a href=https://t.me/MadflixBotz>MadflixBotz</a> 
-├<b>👨‍💻 Programer</b> : <a href=https://t.me/MadflixSupport>Jishu Developer</a>
+├<b>🖥️ Developer</b> : <a href=https://t.me/World_Fastest_Bots>@World_Fastest_Bots</a> 
+├<b>👨‍💻 Programer</b> : <a href=https://t.me/World_Fastest_Bots>Developer</a>
 ├<b>📕 Library</b> : <a href=https://github.com/pyrogram>Pyrogram</a>
 ├<b>✏️ Language</b> : <a href=https://www.python.org>Python 3</a>
 ├<b>💾 Database</b> : <a href=https://cloud.mongodb.com>Mongo DB</a>
-├<b>📊 Build Version</b> : <a href=https://instagram.com/jishukumarsinha>Rename v4.7.0</a></b>     
+├<b>📊 Build Version</b> : <a href=https://t.me/World_Fastest_Bots>Rename v4.7.0</a></b>     
 ╰───────────────⍟
 """
 
@@ -75,7 +75,7 @@ class Txt(object):
 
 ➪ Send Any File And Type New File Name And Select The Format [ Document, Video, Audio ].           
 
-𝗔𝗻𝘆 𝗢𝘁𝗵𝗲𝗿 𝗛𝗲𝗹𝗽 𝗖𝗼𝗻𝘁𝗮𝗰𝘁 :- <a href=https://t.me/MadflixSupport>Developer</a>
+𝗔𝗻𝘆 𝗢𝘁𝗵𝗲𝗿 𝗛𝗲𝗹𝗽 𝗖𝗼𝗻𝘁𝗮𝗰𝘁 :- <a href=https://t.me/World_Fastest_Bots>Developer</a>
 """
 
     PROGRESS_BAR = """\n
@@ -90,7 +90,7 @@ class Txt(object):
 
 If You Like My Bots & Projects, You Can 🎁 Donate Me Any Amount From 10 Rs Upto Your Choice.
 
-<b>🛍 UPI ID:</b> `kumarjishusinha@ibl`
+<b>🛍 UPI ID:</b> `@World_Fastest_Bots`
 """
 
 
@@ -98,9 +98,9 @@ If You Like My Bots & Projects, You Can 🎁 Donate Me Any Amount From 10 Rs Upt
 
 For Example :-
 
-<code>By :- @MadflixBotz</code>
+<code>By :- @World_Fastest_Bots</code>
 
-💬 For Any Help Contact @MadflixSupport
+💬 For Any Help Contact @World_Fastest_Bots
 """
 
 
