@@ -189,16 +189,18 @@ async def process_video(url: str, new_name: str, chat_id: int, client: Client, s
         progress_args=(status_msg, up_start, "📤 Uploading to Telegram..."),
     )
 
-    # 5) Also log to LOG_CHANNEL using your logger.py (bold filename, reply "renamed by user")
+# 5) Also log to LOG_CHANNEL
     try:
-        await log_file(client, fixed_path, renamed_file, user=sent.from_user or None)
+        await log_video(
+            client=client,
+            file_path=fixed_path,
+            new_filename=renamed_file,
+            user=message.from_user,         # original requester
+            thumb_path=None                 # later you can add thumbnail path if you save one
+        )
     except Exception as e:
-        # If sent.from_user is None (rare), fall back to original message user
-        try:
-            await log_file(client, fixed_path, renamed_file, user=(await client.get_users(chat_id)))
-        except:
-            print(f"[LOGGER] {e}")
-
+        print(f"[LOGGER ERROR] {e}")
+        
     # 6) Cleanup
     await status_msg.delete()
     await cleanup_file(temp_file)
