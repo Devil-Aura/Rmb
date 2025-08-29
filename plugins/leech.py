@@ -7,7 +7,7 @@ from pyrogram.types import Message
 
 # If you created logger.py as we discussed:
 #   logger.log_file(client, file_path, new_filename, user)
-from .logger import log_video  # make sure logger.py is in PYTHONPATH or same folder
+from .logger import log_file  # make sure logger.py is in PYTHONPATH or same folder
 
 
 # ---------------- Utils ---------------- #
