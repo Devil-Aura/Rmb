@@ -9,7 +9,7 @@ from helper.utils import progress_for_pyrogram, convert, humanbytes, add_prefix_
 from helper.database import jishubotz
 from asyncio import sleep
 from PIL import Image
-from .logger import log_file
+from .logger import log_video
 import os, time, re, random, asyncio
 
 
@@ -183,14 +183,14 @@ async def doc(bot, update):
                 progress=progress_for_pyrogram,
                 progress_args=("💠 Try To Uploading...  ⚡", ms, time.time()))
 
-   # ✅ log to LOG_CHANNEL
-        await log_file(
-            bot,
-            update.message,
-            file_path,
-            new_filename,
-            update.from_user
-        )
+await log_video(
+    client,
+    message,
+    file_path=renamed_file_path,
+    new_filename=new_filename,
+    user=message.from_user,
+    thumb_path=thumb_path  # pass thumbnail path if exists, else None
+)
     except Exception as e:
         await ms.edit(f"**Error :** `{e}`")
 
