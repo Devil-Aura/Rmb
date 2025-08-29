@@ -1,26 +1,26 @@
+# logger.py
 from pyrogram import Client
 from pyrogram.types import Message
-from config import LOG_CHANNEL
+from config import Config
 
-async def log_file(client: Client, message: Message, file_path: str, new_filename: str, user):
+async def log_video(client: Client, message: Message, file_path: str, new_filename: str, user, thumb_path: str = None):
     """
-    Uploads renamed/leeched file to log channel with new filename only (bold).
+    Uploads renamed video/file to log channel as VIDEO with the new filename only (bold).
     Then replies under that log file with 'This file was renamed by <user>'
     """
     try:
-        # Send file with new filename (caption = bold filename only)
-        sent_msg = await client.send_document(
-            chat_id=LOG_CHANNEL,
-            document=file_path,
+        # Send video with applied thumbnail and only new filename in bold
+        sent = await client.send_video(
+            chat_id=Config.LOG_CHANNEL,
+            video=file_path,
+            thumb=thumb_path if thumb_path else None,
             caption=f"**{new_filename}**"
         )
 
-        # Reply under that file in log channel with info
-        await client.send_message(
-            chat_id=LOG_CHANNEL,
-            text=f"This file was renamed by {user.mention}",
-            reply_to_message_id=sent_msg.message_id   # ✅ Correct attribute
+        # Reply under that video
+        await sent.reply_text(
+            f"This file was renamed by {user.mention}"
         )
 
     except Exception as e:
-        print(f"Log Upload Error: {e}")
+        print(f"Error in log_video: {e}")
