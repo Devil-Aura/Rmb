@@ -6,6 +6,7 @@ from config import Config
 from aiohttp import web
 from route import web_server
 import pyromod
+from leech import add_handlers
 import pyrogram.utils
 
 pyrogram.utils.MIN_CHANNEL_ID = -100999999999999
@@ -48,6 +49,8 @@ class Bot(Client):
             except:
                 print("Please Make This Is Admin In Your Log Channel")
 
+add_handlers(app)
+                
 Bot().run()
 
 
