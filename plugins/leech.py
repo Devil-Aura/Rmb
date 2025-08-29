@@ -148,7 +148,7 @@ async def upload_progress(current: int, total: int, status_msg: Message, start_t
         pass
 
 
-async def process_video(url: str, new_name: str, chat_id: int, client: Client, status_msg: Message):
+async def process_video(url: str, new_name: str, chat_id: int, client: Client, status_msg: Message, message: Message):
     """
     Leech -> Rename -> Fix Metadata -> Upload to user (with progress) -> Log to LOG_CHANNEL -> Cleanup
     """
@@ -191,12 +191,13 @@ async def process_video(url: str, new_name: str, chat_id: int, client: Client, s
 
 # 5) Also log to LOG_CHANNEL
     try:
-        await log_video(
+        await log_file(
             client=client,
+            message=message,
             file_path=fixed_path,
             new_filename=renamed_file,
-            user=message.from_user,         # original requester
-            thumb_path=None                 # later you can add thumbnail path if you save one
+            user=message.from_user,
+            thumb_path=None
         )
     except Exception as e:
         print(f"[LOGGER ERROR] {e}")
@@ -221,7 +222,7 @@ def add_handlers(app: Client):
 
         status_msg = await message.reply("📥 Preparing...", quote=True)
         try:
-            await process_video(url, new_name, message.chat.id, client, status_msg)
+            await process_video(url, new_name, message.chat.id, client, status_msg, message)
         except Exception as e:
             try:
                 await status_msg.edit_text(f"❌ Error: `{e}`")
