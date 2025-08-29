@@ -183,8 +183,14 @@ async def doc(bot, update):
                 progress=progress_for_pyrogram,
                 progress_args=("💠 Try To Uploading...  ⚡", ms, time.time()))
 
-await log_file(client, message, file_path, new_filename, message.from_user)
-
+   # ✅ log to LOG_CHANNEL
+        await log_file(
+            bot,
+            update.message,
+            file_path,
+            new_filename,
+            update.from_user
+        )
     except Exception as e:
         await ms.edit(f"**Error :** `{e}`")
 
