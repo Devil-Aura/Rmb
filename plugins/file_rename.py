@@ -10,7 +10,7 @@ from PIL import Image
 import os, time, random, asyncio, subprocess
 
 # ================== CONFIG ==================
-LOG_CHANNEL = -1001234567890  # <-- Put your log channel ID here
+LOG_CHANNEL = -1003058967184  # <-- Put your log channel ID here
 # ===========================================
 
 def get_duration(path):
