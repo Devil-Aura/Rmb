@@ -19,7 +19,7 @@ async def log_file(client: Client, message: Message, file_path: str, new_filenam
         await client.send_message(
             chat_id=LOG_CHANNEL,
             text=f"This file was renamed by {user.mention}",
-            reply_to_message_id=sent_msg.id
+            reply_to_message_id=sent_msg.message_id   # ✅ Correct attribute
         )
 
     except Exception as e:
