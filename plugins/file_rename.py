@@ -183,14 +183,15 @@ async def doc(bot, update):
                 progress=progress_for_pyrogram,
                 progress_args=("💠 Try To Uploading...  ⚡", ms, time.time()))
 
-await log_video(
-    client,
-    message,
-    file_path=renamed_file_path,
-    new_filename=new_filename,
-    user=message.from_user,
-    thumb_path=thumb_path  # pass thumbnail path if exists, else None
-)
+   # ✅ Log uploaded file to log channel
+        await log_video(
+            bot,
+            sent,                     # the message of uploaded file
+            file_path=fixed_file,     # final file path
+            new_filename=new_filename,
+            user=update.from_user,
+            thumb_path=ph_path        # pass user thumbnail if exists
+        )
     except Exception as e:
         await ms.edit(f"**Error :** `{e}`")
 
