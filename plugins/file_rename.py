@@ -188,17 +188,15 @@ async def doc(bot, update):
     except Exception as e:
         return await ms.edit(f"**Error Uploading File:** `{e}`")
 
-    # Log to log channel
-    try:
-        await log_file(
-            client=bot,
-            message=update.message,
-            file_path=fixed_file,
-            new_filename=new_filename,
-            user=update.from_user,
-            thumb_path=ph_path,
-            duration=duration
-        )
+await log_file(
+    client=bot,
+    message=update.message,
+    file_path=fixed_file,
+    new_filename=new_filename,
+    user=update.from_user,
+    thumb_path=ph_path,
+    duration=duration
+)
     except Exception as e:
         await ms.edit(f"**Error Logging File:** `{e}`")
 
