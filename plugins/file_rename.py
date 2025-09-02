@@ -92,7 +92,6 @@ async def refunc(client, message):
 async def doc(bot, update):
     asyncio.create_task(process_file(bot, update))  # run in background
 
-
 async def process_file(bot, update):
     async with semaphore:  # limit concurrency
         os.makedirs("Metadata", exist_ok=True)
@@ -126,10 +125,16 @@ async def process_file(bot, update):
 
         # Add metadata
         metadata_enabled = await jishubotz.get_metadata(update.message.chat.id)
+        metadata_failed = False
         if metadata_enabled:
             metadata_code = await jishubotz.get_metadata_code(update.message.chat.id)
             metadata_path = f"Metadata/{new_filename}"
-            await add_metadata(path, metadata_path, metadata_code, ms)
+            result = await add_metadata(path, metadata_path, metadata_code, ms)
+            if result:
+                metadata_path = result
+            else:
+                metadata_failed = True
+                metadata_path = path  # fallback to original file
         else:
             metadata_path = path
 
@@ -170,15 +175,20 @@ async def process_file(bot, update):
         # Upload to user
         await ms.edit("⬆️ Uploading...")
         type_ = update.data.split("_")[1]
+        sent_msg = None
         try:
             if type_ == "document":
-                await bot.send_document(update.message.chat.id, document=metadata_path, thumb=ph_path, caption=caption)
+                sent_msg = await bot.send_document(update.message.chat.id, document=metadata_path, thumb=ph_path, caption=caption)
             elif type_ == "video":
-                await bot.send_video(update.message.chat.id, video=metadata_path, thumb=ph_path, caption=caption, duration=duration)
+                sent_msg = await bot.send_video(update.message.chat.id, video=metadata_path, thumb=ph_path, caption=caption, duration=duration)
             elif type_ == "audio":
-                await bot.send_audio(update.message.chat.id, audio=metadata_path, thumb=ph_path, caption=caption, duration=duration)
+                sent_msg = await bot.send_audio(update.message.chat.id, audio=metadata_path, thumb=ph_path, caption=caption, duration=duration)
         except Exception as e:
             return await ms.edit(f"Upload Error: {e}")
+
+        # ⚠️ Warning if metadata failed
+        if metadata_failed and sent_msg:
+            await sent_msg.reply_text("⚠️ Metadata could not be added. Uploaded original file instead.")
 
         # Forward to log channel
         try:
