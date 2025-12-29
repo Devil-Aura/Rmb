@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
-from helper.ffmpeg import fix_thumb, take_screen_shot, add_metadata
+from helper.ffmpeg import fix_thumb, take_screen_shot, add_metadata, fix_metadata
 from helper.utils import progress_for_pyrogram, convert, humanbytes, add_prefix_suffix
 from helper.database import jishubotz
 from PIL import Image
@@ -10,7 +10,7 @@ import os, time, random, asyncio, subprocess
 
 # ================== CONFIG ==================
 LOG_CHANNEL = -1003058967184  # <-- Put your log channel ID here
-MAX_CONCURRENT = 3            # Limit concurrent rename+upload tasks
+MAX_CONCURRENT = 6            # Limit concurrent rename+upload tasks
 semaphore = asyncio.Semaphore(MAX_CONCURRENT)
 # ===========================================
 
@@ -140,6 +140,19 @@ async def process_file(bot, update):
 
         # Duration
         duration = get_duration(metadata_path)
+
+        if duration == 0:
+            try:
+                await ms.edit("<i>Fixing Video Duration... ⚡</i>")
+                fixed_path = await fix_metadata(metadata_path, f"{metadata_path}_fixed")
+                # Update metadata_path to the fixed file
+                if metadata_path != path and os.path.exists(metadata_path):
+                     # If metadata_path was an intermediate file (not the original download), delete it
+                     os.remove(metadata_path)
+                metadata_path = fixed_path
+                duration = get_duration(metadata_path)
+            except Exception as e:
+                print(f"Error fixing duration: {e}")
 
         # Caption
         media = getattr(file_msg, file_msg.media.value)
