@@ -62,6 +62,7 @@ async def add_metadata(input_path, output_path, metadata, ms):
             '-metadata:s:a', f'title={metadata}',
             '-metadata:s:v', f'title={metadata}',
             '-metadata', f'artist={metadata}',
+            '-movflags', '+faststart', '-fflags', '+genpts',
             output_path
         ]
         process = await asyncio.create_subprocess_exec(
