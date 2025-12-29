@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
-from helper.ffmpeg import fix_thumb, take_screen_shot, add_metadata, fix_metadata
+from helper.ffmpeg import fix_thumb, take_screen_shot, add_metadata, fix_metadata, get_duration
 from helper.utils import progress_for_pyrogram, convert, humanbytes, add_prefix_suffix
 from helper.database import jishubotz
 from PIL import Image
@@ -10,24 +10,9 @@ import os, time, random, asyncio, subprocess
 
 # ================== CONFIG ==================
 LOG_CHANNEL = -1003058967184  # <-- Put your log channel ID here
-MAX_CONCURRENT = 6            # Limit concurrent rename+upload tasks
+MAX_CONCURRENT = 3            # Limit concurrent rename+upload tasks
 semaphore = asyncio.Semaphore(MAX_CONCURRENT)
 # ===========================================
-
-def get_duration(path):
-    """Get actual video/audio duration using ffprobe."""
-    try:
-        result = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries",
-             "format=duration", "-of",
-             "default=noprint_wrappers=1:nokey=1", path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT
-        )
-        return int(float(result.stdout))
-    except:
-        return 0
-
 
 @Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
