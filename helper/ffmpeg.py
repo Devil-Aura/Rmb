@@ -9,33 +9,6 @@ from hachoir.parser import createParser
 from pyrogram.types import Message
 
 
-def get_duration(path):
-    try:
-        result = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-        if result.returncode == 0:
-            return int(float(result.stdout.strip()))
-    except Exception as e:
-        print(f"FFprobe error: {e}")
-    
-    # Fallback to hachoir
-    try:
-        from hachoir.parser import createParser
-        from hachoir.metadata import extractMetadata
-        parser = createParser(path)
-        if not parser:
-            return 0
-        metadata = extractMetadata(parser)
-        if not metadata:
-            return 0
-        return int(metadata.get("duration").seconds)
-    except Exception as e:
-        print(f"Hachoir error: {e}")
-        return 0
-
 async def fix_thumb(thumb):
     width = 0
     height = 0
@@ -89,7 +62,6 @@ async def add_metadata(input_path, output_path, metadata, ms):
             '-metadata:s:a', f'title={metadata}',
             '-metadata:s:v', f'title={metadata}',
             '-metadata', f'artist={metadata}',
-            '-movflags', '+faststart', '-fflags', '+genpts',
             output_path
         ]
         process = await asyncio.create_subprocess_exec(
@@ -134,8 +106,8 @@ async def fix_metadata(input_file, output_file):
     command = [
         "ffmpeg", "-i", input_file,
         "-c", "copy", "-map", "0",
-        "-avoid_negative_ts", "make_zero",
-        "-fflags", "+genpts+discardcorrupt",
+        "-movflags", "+faststart",
+        "-fflags", "+genpts",
         "-y", output_file
     ]
     subprocess.run(command, check=True)
